@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>PythonApplicationTest</Name>
     <RootNamespace>PythonApplicationTest</RootNamespace>
+    <InterpreterId>MSBuild|env_api_test|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,6 +29,20 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="env" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="env_api_test\">
+      <Id>env_api_test</Id>
+      <Version>0.0</Version>
+      <Description>env_api_test (Python 3.13 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
