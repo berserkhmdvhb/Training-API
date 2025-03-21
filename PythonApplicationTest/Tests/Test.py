@@ -15,6 +15,6 @@ async def main():
     result = await get_data()    # Simulating delay (without await will be unexpected behavior)
     #tm_post_req = datetime.now()
     print("End\n")
-    #print(f'Start Time: {tm_start}\nPre Req Time: {tm_pre_req}\nPost Req Time:{tm_post_req}\nDuration:{tm_post_req - tm_start}')
+    #print(f'Start Time: {tm_start}\nPre Req Time: {tm_pre_req}\nPost Req Time:{tm_post_req}\nDuration:{tm_post_req - tm_st art}')
 
 asyncio.run(main())
