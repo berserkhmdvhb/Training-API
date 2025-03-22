@@ -5,7 +5,7 @@
 
 ```mermaid
 graph TD
-    A["🧑‍💻 Browser / Client\n(e.g. http://127.0.0.1:8000)"]
+    A["🧑‍💻 Browser / Client\nExample: 127.0.0.1:8000"]
     B["🌀 Uvicorn\nASGI Server"]
     C["🚀 FastAPI App"]
     D["📦 Route Handler\n@app.get('/')"]
