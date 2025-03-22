@@ -12,6 +12,7 @@
     <Name>PythonApplicationTest</Name>
     <RootNamespace>PythonApplicationTest</RootNamespace>
     <InterpreterId>MSBuild|env_api_test|$(MSBuildProjectFullPath)</InterpreterId>
+    <TestFramework>Pytest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
