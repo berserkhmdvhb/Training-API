@@ -1,7 +1,25 @@
 # Connecting to database from local
 
 ## FastAPI Flow Local
-![FastAPI_Flow](https://github.com/user-attachments/assets/34b38022-a034-4127-8ef8-38d1948a9721)
+### Overview
+
+```mermaid
+graph TD
+    Browser["🧑‍💻 Browser / Client<br>http://127.0.0.1:8000/"]
+    Uvicorn["🌀 Uvicorn<br>ASGI Server"]
+    FastAPI["🚀 FastAPI App"]
+    Route["📦 Route Handler<br>@app.get('/')"]
+    JSON["📤 JSON Response"]
+
+    Browser -->|1. Sends HTTP Request| Uvicorn
+    Uvicorn -->|2. Parses and Wraps Request| FastAPI
+    FastAPI -->|3. Matches route, validates data| Route
+    Route -->|4. Returns Python dict| FastAPI
+    FastAPI -->|5. Converts to JSON| JSON
+    JSON -->|6. Sends HTTP Response| Uvicorn
+    Uvicorn -->|7. Returns response to browser| Browser
+```
+### Detailed
 
 ```mermaid
 sequenceDiagram
