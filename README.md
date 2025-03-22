@@ -1,10 +1,5 @@
 # Connecting to database from local
 
-
-## Achieve MVC in FastAPI
-- [1](https://stackoverflow.com/questions/64943693/what-are-the-best-practices-for-structuring-a-fastapi-project)
-- [2](https://verticalserve.medium.com/building-a-python-fastapi-crud-api-with-mvc-structure-13ec7636d8f2)
-
 ## FastAPI Flow Local
 ![FastAPI_Flow](https://github.com/user-attachments/assets/34b38022-a034-4127-8ef8-38d1948a9721)
 
@@ -43,6 +38,11 @@ sequenceDiagram
     Note over Browser,App: Entire flow is local on 127.0.0.1
 
 ```
+
+
+## Achieve MVC in FastAPI
+- [1](https://stackoverflow.com/questions/64943693/what-are-the-best-practices-for-structuring-a-fastapi-project)
+- [2](https://verticalserve.medium.com/building-a-python-fastapi-crud-api-with-mvc-structure-13ec7636d8f2)
 
 ## Manual coding
 
