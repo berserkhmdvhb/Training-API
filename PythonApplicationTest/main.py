@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 
 app = FastAPI()
 
@@ -8,6 +8,7 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}
 '''
+
 #127.0.0.1:8000/"
 
 #Code 2: Print item_id
@@ -102,6 +103,7 @@ async def read_item(item_id: str, q: str | None = None, short: bool = False):
 
 
 # Multiple path and query parameters
+'''
 @app.get("/users/{user_id}/items/{item_id}")
 async def read_user_item(
     user_id: int, item_id: str, q: str | None = None, short: bool = False
@@ -114,5 +116,76 @@ async def read_user_item(
             {"description": "This is an amazing item that has a long description"}
         )
     return item
+ '''
 #127.0.0.1:8000/users/4123/items/shoe?q=blabla&short=1
 #127.0.0.1:8000/users/4123/items/shoe
+
+# Request Body
+from pydantic import BaseModel
+
+## Create Data Model
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+
+### POST: Simple Version
+'''
+@app.post("/items/")
+async def create_item(item: Item):
+    return item 
+'''
+
+### POST: Refined Version
+'''
+@app.post("/items/")
+async def create_item(item: Item):
+    item_dict = item.dict()
+    if item.tax is not None:
+        price_with_tax = item.price + item.tax
+        item_dict.update({"price_with_tax": price_with_tax})
+    return item_dict
+'''
+
+
+## PUT: Request body + path parameters
+'''
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item):
+    return {"item_id": item_id, **item.dict()}
+'''
+
+## PUT: Request body + path + query parameters
+'''
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item, q: str | None = None):
+    result = {"item_id": item_id, **item.dict()}
+    if q:
+        result.update({"q": q})
+    return result
+'''
+
+# Query Parameters and String Validations
+'''
+@app.get("/items/")
+async def read_items(q: str | None = None):
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
+'''
+## Additional validation on length of q
+### Here we are using Query() because this is a query parameter.
+### Path(), Body(), Header(), and Cookie(), that also accept the same arguments as Query().
+from typing import Annotated
+    
+@app.get("/items/")
+async def read_items(q: Annotated[str | None, Query(min_length=3, max_length=50, pattern="^fixedquery$", alias="item-query")] = None):
+    results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
+    if q:
+        results.update({"q": q})
+    return results
+
+#127.0.0.1:8000/items/?item-query=blablalba
+#127.0.0.1:8000/items/?item-query=fixedquery
