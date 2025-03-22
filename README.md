@@ -5,10 +5,10 @@
 
 ```mermaid
 graph TD
-    A["🧑‍💻 Browser / Client\nExample: 127.0.0.1:8000"]
-    B["🌀 Uvicorn\nASGI Server"]
+    A["🧑‍💻 Browser / Client<br/>Example: 127.0.0.1:8000"]
+    B["🌀 Uvicorn<br/>ASGI Server"]
     C["🚀 FastAPI App"]
-    D["📦 Route Handler\n@app.get('/')"]
+    D["📦 Route Handler<br/>@app.get('/')"]
     E["📤 JSON Response"]
 
     A --> B
