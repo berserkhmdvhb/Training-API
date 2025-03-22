@@ -5,19 +5,19 @@
 
 ```mermaid
 graph TD
-    Browser["🧑‍💻 Browser / Client\nhttp://127.0.0.1:8000"]
-    Uvicorn["🌀 Uvicorn\nASGI Server"]
-    FastAPI["🚀 FastAPI App"]
-    Route["📦 Route Handler\n@app.get('/')"]
-    JSON["📤 JSON Response"]
+    A["🧑‍💻 Browser / Client\n(e.g. http://127.0.0.1:8000)"]
+    B["🌀 Uvicorn\nASGI Server"]
+    C["🚀 FastAPI App"]
+    D["📦 Route Handler\n@app.get('/')"]
+    E["📤 JSON Response"]
 
-    Browser --> Uvicorn
-    Uvicorn --> FastAPI
-    FastAPI --> Route
-    Route --> FastAPI
-    FastAPI --> JSON
-    JSON --> Uvicorn
-    Uvicorn --> Browser
+    A --> B
+    B --> C
+    C --> D
+    D --> C
+    C --> E
+    E --> B
+    B --> A
 ```
 ### Detailed
 
