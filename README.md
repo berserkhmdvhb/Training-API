@@ -11,13 +11,13 @@ graph TD
     Route["📦 Route Handler\n@app.get('/')"]
     JSON["📤 JSON Response"]
 
-    Browser -->|1. Sends HTTP Request| Uvicorn
-    Uvicorn -->|2. Parses Request| FastAPI
-    FastAPI -->|3. Matches Route & Validates Input| Route
-    Route -->|4. Executes Python Code| FastAPI
-    FastAPI -->|5. Builds JSON Response| JSON
-    JSON -->|6. Sends HTTP Response| Uvicorn
-    Uvicorn -->|7. Returns Response| Browser
+    Browser --> Uvicorn
+    Uvicorn --> FastAPI
+    FastAPI --> Route
+    Route --> FastAPI
+    FastAPI --> JSON
+    JSON --> Uvicorn
+    Uvicorn --> Browser
 ```
 ### Detailed
 
