@@ -102,3 +102,4 @@ Resources
 - [2](https://verticalserve.medium.com/building-a-python-fastapi-crud-api-with-mvc-structure-13ec7636d8f2)
 - [3](https://github.com/iam-abbas/FastAPI-Production-Boilerplate)
 - [4](https://github.com/luchog01/minimalistic-fastapi-template)
+- [5](https://github.com/fastapi/sqlmodel)
