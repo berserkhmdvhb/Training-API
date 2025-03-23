@@ -1,10 +1,15 @@
 # Initialize
-from fastapi import FastAPI, Query, Path, Body, Cookie, Header, Form
+from fastapi import FastAPI, Query, Path, Body, Cookie, Header, Form, File, UploadFile, HTTPException
+from fastapi.encoders import jsonable_encoder
 from typing import Annotated, Literal, Any
 from pydantic import BaseModel, Field, EmailStr
 
 from datetime import datetime, time, timedelta
 from uuid import UUID
+
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
@@ -352,7 +357,7 @@ async def update_item(item_id: int, item: Annotated[Item, Body(embed=True)]):
     return results
 '''
 
-#Without Embed
+# Without Embed
 
 '''
 {
@@ -363,7 +368,7 @@ async def update_item(item_id: int, item: Annotated[Item, Body(embed=True)]):
 }
 '''
 
-#With Embed
+# With Embed
 
 '''
 {
@@ -754,7 +759,142 @@ async def create_user(user_in: UserIn):
     user_saved = fake_save_user(user_in)
     return user_saved
 '''
+
 #########################################################################################
 
 # Receive form fields instead of JSON
 
+'''
+@app.post("/login/")
+async def login(
+                username: Annotated[str, Form()], 
+                password: Annotated[str, Form()]
+            ):
+    return {"username": username}
+
+'''
+
+## Form Models
+### Forbid Extra Form Fields with model_config
+
+class FormData(BaseModel):
+    username: str
+    password: str
+    model_config = {"extra": "forbid"}
+
+'''
+@app.post("/login/")
+async def login(data: Annotated[FormData, Form()]):
+    return data
+'''
+
+#########################################################################################
+
+# Request Files
+
+## Byte
+## Putting default value makes file uploading optional
+
+'''
+@app.post("/files/")
+async def create_file(file: Annotated[bytes | None, File(description="A file read as bytes")] = None):
+    if not file:
+        return {"message": "No file sent"}
+    else:
+        return {"file_size": len(file)}
+'''
+
+## UploadFile
+
+'''
+@app.post("/uploadfile/")
+async def create_upload_file(
+    file: Annotated[UploadFile | None, File(description="A file read as UploadFile")] = None,
+):
+    if not file:
+        return {"message": "No upload file sent"}
+    else:
+        return {"filename": file.filename}
+'''
+
+#########################################################################################
+
+# Handling Errors
+
+items = {"foo": "The Foo Wrestlers"}
+
+'''
+@app.get("/items/{item_id}")
+async def read_item(item_id: str):
+    if item_id not in items:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return {"item": items[item_id]}
+'''
+
+## Add custom headers
+
+'''
+@app.get("/items-header/{item_id}")
+async def read_item_header(item_id: str):
+    if item_id not in items:
+        raise HTTPException(
+            status_code=404,
+            detail="Item not found",
+            headers={"X-Error": "There goes my error"},
+        )
+    return {"item": items[item_id]}
+'''
+
+#########################################################################################
+
+# Body: Update
+
+class Item(BaseModel):
+    name: str | None = None
+    description: str | None = None
+    price: float | None = None
+    tax: float = 10.5
+    tags: list[str] = []
+
+
+items = {
+    "foo": {"name": "Foo", "price": 50.2},
+    "bar": {"name": "Bar", "description": "The bartenders", "price": 62, "tax": 20.2},
+    "baz": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": []},
+}
+
+'''
+@app.get("/items/{item_id}", response_model=Item)
+async def read_item(item_id: str):
+    return items[item_id]
+
+
+@app.put("/items/{item_id}", response_model=Item)
+async def update_item(item_id: str, item: Item):
+    update_item_encoded = jsonable_encoder(item)
+    items[item_id] = update_item_encoded
+    return update_item_encoded
+'''
+
+#########################################################################################
+
+# Body: Patch
+
+'''
+@app.get("/items/{item_id}", response_model=Item)
+async def read_item(item_id: str):
+    return items[item_id]
+
+
+@app.patch("/items/{item_id}", response_model=Item)
+async def update_item(item_id: str, item: Item):
+    stored_item_data = items[item_id]
+    stored_item_model = Item(**stored_item_data)
+    ###log###
+    logger.info(f"Stored model before update: {stored_item_model}")
+    #########
+    update_data = item.dict(exclude_unset=True)
+    updated_item = stored_item_model.copy(update=update_data)
+    items[item_id] = jsonable_encoder(updated_item)
+    return updated_item
+'''
