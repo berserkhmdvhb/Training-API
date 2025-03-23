@@ -95,11 +95,11 @@ route = APIRoute(
 app.router.routes.append(route)
 ```
 
-Resources 
+## 
 
 ## Achieve MVC in FastAPI
-- [1](https://stackoverflow.com/questions/64943693/what-are-the-best-practices-for-structuring-a-fastapi-project)
-- [2](https://verticalserve.medium.com/building-a-python-fastapi-crud-api-with-mvc-structure-13ec7636d8f2)
-- [3](https://github.com/iam-abbas/FastAPI-Production-Boilerplate)
-- [4](https://github.com/luchog01/minimalistic-fastapi-template)
-- [5](https://github.com/fastapi/sqlmodel)
+- [1. Best Practices (MVC)](https://stackoverflow.com/questions/64943693/what-are-the-best-practices-for-structuring-a-fastapi-project)
+- [2. Achieve MVC in FastAPI](https://verticalserve.medium.com/building-a-python-fastapi-crud-api-with-mvc-structure-13ec7636d8f2)
+- [3. MVC pattern template](https://github.com/iam-abbas/FastAPI-Production-Boilerplate)
+- [4. Minimalistic but professional template](https://github.com/luchog01/minimalistic-fastapi-template)
+- [5. Lbirary for patching SQLAlchemy with Pydantic](https://github.com/fastapi/sqlmodel)
