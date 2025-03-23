@@ -58,10 +58,6 @@ sequenceDiagram
 ```
 
 
-## Achieve MVC in FastAPI
-- [1](https://stackoverflow.com/questions/64943693/what-are-the-best-practices-for-structuring-a-fastapi-project)
-- [2](https://verticalserve.medium.com/building-a-python-fastapi-crud-api-with-mvc-structure-13ec7636d8f2)
-
 ## Manual coding
 
 Consider the following simple code for sending a JSON response:
@@ -98,3 +94,10 @@ route = APIRoute(
 )
 app.router.routes.append(route)
 ```
+
+Resources 
+
+## Achieve MVC in FastAPI
+- [1](https://stackoverflow.com/questions/64943693/what-are-the-best-practices-for-structuring-a-fastapi-project)
+- [2](https://verticalserve.medium.com/building-a-python-fastapi-crud-api-with-mvc-structure-13ec7636d8f2)
+- [3](https://github.com/iam-abbas/FastAPI-Production-Boilerplate)
