@@ -95,9 +95,7 @@ route = APIRoute(
 app.router.routes.append(route)
 ```
 
-## 
-
-## Achieve MVC in FastAPI
+## Resources
 - [1. Best Practices (MVC)](https://stackoverflow.com/questions/64943693/what-are-the-best-practices-for-structuring-a-fastapi-project)
 - [2. Achieve MVC in FastAPI](https://verticalserve.medium.com/building-a-python-fastapi-crud-api-with-mvc-structure-13ec7636d8f2)
 - [3. MVC pattern template](https://github.com/iam-abbas/FastAPI-Production-Boilerplate)
