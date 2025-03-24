@@ -58,8 +58,10 @@ sequenceDiagram
 ```
 
 
-## Manual coding
+## Underlying code
 
+FastAPI stiches multiple libraries together, such as Starlette, Pydantic, Typing, etc.
+In this structure, the decorator `@app.get("/")` from FastAPI is equivalent to `Route("/", root, methods=["GET"])` in Starlette.
 Consider the following simple code for sending a JSON response:
 
 ```python
