@@ -1,5 +1,5 @@
 # Initialize
-from fastapi import FastAPI, Query, Path, Body, Cookie, Header, Form, File, UploadFile, HTTPException, Depends
+from fastapi import FastAPI, Query, Path, Body, Cookie, Header, Form, File, UploadFile, HTTPException
 from fastapi.encoders import jsonable_encoder
 from typing import Annotated, Literal, Any
 from pydantic import BaseModel, Field, EmailStr
@@ -897,77 +897,4 @@ async def update_item(item_id: str, item: Item):
     updated_item = stored_item_model.copy(update=update_data)
     items[item_id] = jsonable_encoder(updated_item)
     return updated_item
-'''
-
-#########################################################################################
-
-# Dependencies
-
-fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
-
-'''
-#async def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):
-#    return {"q": q, "skip": skip, "limit": limit}
-
-class CommonQueryParams:
-    def __init__(self, q: str | None = None, skip: int = 0, limit: int = 100):
-        self.q = q
-        self.skip = skip
-        self.limit = limit
-
-
-@app.get("/items/")
-async def read_items(commons: Annotated[CommonQueryParams, Depends()]):
-    response = {}
-    if commons.q:
-        response.update({"q": commons.q})
-    items = fake_items_db[commons.skip : commons.skip + commons.limit]
-    response.update({"items": items})
-    return response
-'''
-
-# Sub-dependencies
-
-## Function Version
-
-'''
-def query_extractor(q: str | None = None):
-    return q
-
-
-def query_or_cookie_extractor(
-    q: Annotated[str, Depends(query_extractor)],
-    last_query: Annotated[str | None, Cookie()] = None,
-):
-    if not q:
-        return last_query
-    return q
-
-
-@app.get("/items/")
-async def read_query(
-    query_or_default: Annotated[str, Depends(query_or_cookie_extractor)],
-):
-    return {"q_or_cookie": query_or_default}
-'''
-
-## Class Version
-
-'''
-class QueryExtractor:
-    def __call__(self, q: str | None = None) -> str | None:
-        return q
-
-class QueryOrCookieExtractor:
-    def __init__(self, query_extractor: Annotated[str | None, Depends(QueryExtractor)]):
-        self.query_extractor = query_extractor
-
-    def __call__(self, last_query: Annotated[str | None, Cookie()] = None) -> str | None:
-        return self.query_extractor or last_query
-
-@app.get("/items/")
-async def read_query(
-    query_or_default: Annotated[str | None, Depends(QueryOrCookieExtractor)],
-):
-    return {"q_or_cookie": query_or_default}
 '''
