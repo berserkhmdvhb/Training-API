@@ -1,14 +1,6 @@
 
 # 🧠 Complete Best Practices & Architecture Guide for FastAPI Projects
 
-This guide combines:
-- ✅ Your earlier best practices
-- ✅ FastAPI official documentation
-- ✅ GitHub templates (minimalistic & production-ready)
-- ✅ StackOverflow + blog community insights
-- ✅ Refactoring.Guru patterns and code smell practices
-- ✅ REST API conventions from real-world APIs
-
 ---
 
 ## 🧱 1. Project Structure
