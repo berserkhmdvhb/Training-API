@@ -37,8 +37,36 @@ project/
 ✅ Optional: Domain-Driven Design structure with `/domain/item`, `/domain/user`, etc.
 
 ---
+## 2. 🧠 Coding Best Practices & Clean Code
 
-## 🧪 2. Testing Best Practices
+### ✅ Code Clarity
+- Follow **PEP8** formatting.
+- Use **type hints** (`str`, `int`, `Annotated`, etc.).
+- Use **clear, consistent naming** (e.g., plural route names: `/items/`, not `/item/`).
+
+### ✅ Avoid Code Smells (Refactoring Guru):
+- **Long functions** → split into smaller helpers.
+- **Duplicated logic** → use dependency injection or service layer.
+- **Tight coupling** → abstract DB logic into repositories/services.
+- **Inconsistent naming** → follow RESTful and Python conventions.
+- **God object** → split large classes or files by responsibility.
+---
+## 🧪 3. Testing
+
+
+- Override dependencies with `app.dependency_overrides[...]`
+- Use `pytest`, `fixtures`, factory functions
+- Cover: valid flows, edge cases, auth failures, validation errors
+- Use `TestClient` for full request/response testing:
+
+Using `TestClient`, test the following:
+
+  - Routes (status code, response schema)
+  - Validation (400s on bad input)
+  - Business logic
+
+
+### ✅ Sample `test_main.py`
 
 ```python
 from fastapi.testclient import TestClient
@@ -52,14 +80,9 @@ def test_create_item():
     assert response.json()["name"] == "Test"
 ```
 
-- Override dependencies with `app.dependency_overrides[...]`
-- Use `pytest`, `fixtures`, factory functions
-- Cover: valid flows, edge cases, auth failures, validation errors
-- Use `TestClient` for full request/response testing
-
 ---
 
-## 🧬 3. Dependency Injection (`Depends()`)
+## 🧬 4. Dependency Injection (`Depends()`)
 
 ```python
 def get_db():
@@ -74,14 +97,14 @@ def get_items(db: Session = Depends(get_db)):
     ...
 ```
 
-- Use for DB session, auth, pagination
+- Use for DB session, auth, Pagination/query filter logic
 - Chain dependencies: `get_current_user`, then `get_admin_user`
 - Improves testability & modularity
 - Use in services too (not just routes)
 
 ---
 
-## 🧼 4. Clean Code & Design Principles
+## 🧼 5. Clean Code & Design Principles
 
 - Use `Annotated[]`, `Field()`, `BaseModel`
 - Avoid:
@@ -92,9 +115,23 @@ def get_items(db: Session = Depends(get_db)):
 - Keep route handlers thin (delegate to services)
 - Consistent naming: plural nouns, snake_case in Python, kebab-case in URLs
 
+  ### ✅ Linting & Formatting
+- Use `ruff` or `flake8` for linting
+- Use `black` for formatting
+
+### ✅ Git & Version Control
+- Use GitHub repo for hosting and version tracking
+- Write clean commit messages
+- Use `.gitignore`
+
+### ✅ CI/CD (Optional for now)
+- Add GitHub Actions for:
+  - Testing on push
+  - Linting/formatting check
+
 ---
 
-## 🗂️ 5. Pydantic Usage
+## 🗂️ 6. Pydantic Usage
 
 ```python
 class Item(BaseModel):
@@ -112,7 +149,7 @@ class Item(BaseModel):
 
 ---
 
-## 🔁 6. API Design Best Practices
+## 🔁 7. API Design Best Practices
 
 - Use nouns in paths: `/items/`, `/orders/{order_id}`
 - Version APIs: `/api/v1/...`
@@ -125,7 +162,7 @@ class Item(BaseModel):
 
 ---
 
-## 🛡️ 7. Security
+## 🛡️ 8. Security
 
 - Use `Depends(get_current_user)` for secured endpoints
 - Auth options: OAuth2 + JWT, API keys
@@ -136,7 +173,7 @@ class Item(BaseModel):
 
 ---
 
-## ⚙️ 8. Config & Environments
+## ⚙️ 9. Config & Environments
 
 ```python
 from pydantic_settings import BaseSettings
@@ -156,9 +193,19 @@ settings = Settings()
 - Provide `.env.example` for reference
 - Inject config with `Depends(get_settings)`
 
+### ✅ Environment Management
+- Use `.env` and `pydantic.BaseSettings` for:
+  - Secrets
+  - DB URIs
+  - API keys
+
+### ✅ Config Loader
+- Centralize config in a file like `settings.py` or `config.py`
+
+
 ---
 
-## 🚀 9. Performance & Optimization
+## 🚀 10. Performance & Optimization
 
 - Use `async def` + await for all I/O
 - Use async DB (SQLAlchemy 2.0+, Tortoise)
@@ -170,7 +217,7 @@ settings = Settings()
 
 ---
 
-## 🧾 10. Logging & Error Handling
+## 🧾 11. Logging & Error Handling
 
 ```python
 @app.middleware("http")
@@ -189,7 +236,7 @@ async def add_process_time_header(request: Request, call_next):
 
 ---
 
-## 📚 11. Documentation & Developer Experience
+## 📚 12. Documentation & Developer Experience
 
 - Auto docs via Swagger (`/docs`) and ReDoc (`/redoc`)
 - Use:
@@ -200,7 +247,7 @@ async def add_process_time_header(request: Request, call_next):
 
 ---
 
-## 🧩 12. Advanced Features (Optional)
+## 🧩 13. Advanced Features (Optional)
 
 - `BackgroundTasks` for async post-response jobs
 - `orjson` or `ujson` for faster JSON encoding
