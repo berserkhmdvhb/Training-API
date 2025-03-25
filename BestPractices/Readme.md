@@ -1,5 +1,5 @@
 
-# ✅ Complete Best Practices & Design Guidelines for FastAPI REST API Projects
+# ✅ Best Practices & Design Guidelines for FastAPI REST API Projects
 
 ---
 
