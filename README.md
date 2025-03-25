@@ -22,25 +22,38 @@ graph TD
 ### Detailed
 
 ```mermaid
-graph TD
-    Run["▶️ run.py<br/>Entry Point"] -->|launches| Uvicorn["🌀 Uvicorn<br/>ASGI Server"]
-    Uvicorn --> AppMain["🚀 app.main.py<br/>FastAPI App"]
+sequenceDiagram
+    autonumber
+    participant Browser
+    participant OS
+    participant Uvicorn as Uvicorn (ASGI Server)
+    participant FastAPI
+    participant App as Your Python Function
 
-    %% App Layer
-    AppMain --> Router["📦 api.v1.items.py<br/>Routes"]
-    AppMain --> Settings["⚙️ core.config.py<br/>Settings"]
+    Note over Browser: User visits http://127.0.0.1:8000/
 
-    %% Router Layer
-    Router --> Schemas["🧾 schemas.item.py"]
-    Router --> Service["🧠 services.item_service.py"]
-    Router --> Auth["🔐 dependencies.auth.py"]
+    Browser->>OS: Send HTTP GET request to 127.0.0.1:8000
+    OS->>Uvicorn: Deliver TCP packet with HTTP request
 
-    %% Service Layer
-    Service --> Session["🔗 db.session.py"]
-    Service --> ORM["🧱 models.item.py"]
+    Note over Uvicorn: Uvicorn listens on 127.0.0.1:8000
+    Uvicorn->>Uvicorn: Parse HTTP method and path
+    Uvicorn->>FastAPI: Call FastAPI ASGI app with scope & receive/send
 
-    %% Database
-    ORM --> DB["🗄️ SQLite Database (test.db)"]
+    FastAPI->>FastAPI: Match route (GET /)
+    FastAPI->>FastAPI: Validate path/query/body with type hints
+    FastAPI->>App: Call Python function (e.g. root())
+
+    App-->>FastAPI: Return Python dict (e.g. {"message": "Hello"})
+
+    FastAPI->>FastAPI: Convert return value to JSON
+    FastAPI->>Uvicorn: Send response body, headers, status
+
+    Uvicorn->>OS: Build raw HTTP response
+    OS->>Browser: Deliver HTTP response over TCP
+
+    Browser->>Browser: Render JSON result in tab
+
+    Note over Browser,App: Entire flow is local on 127.0.0.1
 ```
 
 
