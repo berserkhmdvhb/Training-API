@@ -49,6 +49,7 @@ async def read_item(
     item = {"item_id": item_id}
     if q:
         item["q"] = q
+        #logger.info(f"Stored item: {item}")
     return item
 
 
