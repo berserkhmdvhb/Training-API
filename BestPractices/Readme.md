@@ -147,6 +147,13 @@ class Item(BaseModel):
 - * Use **clear query strings** for filtering and sorting:
   * Example: `?sort_by=registered`
   * Example: `?filter=color:blue`
+  ![44](figures/44.PNG)
+  ![45](figures/45.PNG)
+  ![46](figures/46.PNG)
+  ![47](figures/47.PNG)
+  ![48](figures/48.PNG)
+  ![49](figures/49.PNG)
+  ![50](figures/50.PNG)  
 - Support:
   - Pagination: `?limit=20&offset=0`
     - **Offset-based** (`limit`, `offset`) — simple but can be slow on large datasets
