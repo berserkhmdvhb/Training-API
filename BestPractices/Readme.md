@@ -35,6 +35,7 @@ project/
 - Follow **PEP8** formatting.
 - Use **type hints** (`str`, `int`, `Annotated`, etc.).
 - Use **clear, consistent naming** (e.g., plural route names: `/items/`, not `/item/`).
+  
 
 ### ✅ Avoid Code Smells (Refactoring Guru):
 - **Long functions** → split into smaller helpers.
@@ -107,6 +108,7 @@ def get_items(db: Session = Depends(get_db)):
 - Keep route handlers thin (delegate to services)
 - Consistent naming: plural nouns, snake_case in Python, kebab-case in URLs
     ![31](figures/31.PNG)
+    ![32](figures/32.PNG)
 
   ### ✅ Linting & Formatting
 - Use `ruff` for linting and formatting
@@ -268,10 +270,15 @@ settings = Settings()
   ![21](figures/21.PNG)
   ![22](figures/22.PNG)
   ![23](figures/23.PNG)
+  ![24](figures/24.PNG)
 * Use **lightweight JSON serializers** (e.g. `orjson`) for faster JSON encoding
   ![19](figures/19.PNG)
   ![20](figures/20.PNG)
 * Use **asynchronous logging** in high-throughput systems to avoid blocking I/O
+  ![25](figures/25.PNG)
+  ![26](figures/26.PNG)
+  ![27](figures/27.PNG)
+  ![28](figures/28.PNG)
 * Use background tasks for expensive post-response processing
 ---
 
