@@ -150,6 +150,13 @@ class Item(BaseModel):
 - Support:
   - Pagination: `?limit=20&offset=0`
     - **Offset-based** (`limit`, `offset`) — simple but can be slow on large datasets
+    ![18](figures/18.PNG)
+    ![18_1](figures/18_1.PNG)
+    ![18_2](figures/18_2.PNG)
+    ![18_3](figures/18_3.PNG)
+    ![18_4](figures/18_4.PNG)
+    ![18_5](figures/18_5.PNG)
+    ![18_6](figures/18_6.PNG)
     -**Cursor-based** — scalable, tracks changes better
   - Filtering: `?status=active`
   - Sorting: `?sort=-created_at`
