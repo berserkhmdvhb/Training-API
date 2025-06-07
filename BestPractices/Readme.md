@@ -108,8 +108,7 @@ def get_items(db: Session = Depends(get_db)):
 - Consistent naming: plural nouns, snake_case in Python, kebab-case in URLs
 
   ### ✅ Linting & Formatting
-- Use `ruff` or `flake8` for linting
-- Use `black` for formatting
+- Use `ruff` for linting and formatting
 
 ### ✅ Git & Version Control
 - Use GitHub repo for hosting and version tracking
@@ -145,13 +144,28 @@ class Item(BaseModel):
 
 - Use nouns in paths: `/items/`, `/orders/{order_id}`
 - Version APIs: `/api/v1/...`
+- * Use **clear query strings** for filtering and sorting:
+  * Example: `?sort_by=registered`
+  * Example: `?filter=color:blue`
 - Support:
   - Pagination: `?limit=20&offset=0`
+    - **Offset-based** (`limit`, `offset`) — simple but can be slow on large datasets
+    -**Cursor-based** — scalable, tracks changes better
   - Filtering: `?status=active`
   - Sorting: `?sort=-created_at`
-- Idempotency for PUT, DELETE
+- Idempotency for PUT, DELETE:
+  -`GET`: naturally idempotent
+  - `PUT`, `DELETE`: should be idempotent
+  - `POST`: not idempotent by default — implement safeguards (client-generated IDs)
+  - `PATCH`: not guaranteed idempotent — document behavior
 - Return appropriate status codes
 
+- Use consistent, clear URL patterns:
+  - Plural nouns for collections (`/users/`)
+  - Forward slashes (`/`) for hierarchy
+  - Hyphens (`-`) for multi-word segments
+- Keep cross-resource references simple
+- Plan for **rate limiting** to protect from abuse and DDoS attacks
 ---
 
 ## 🛡️ 8. Security
@@ -161,7 +175,14 @@ class Item(BaseModel):
 - Don't expose stack traces
 - Validate everything with Pydantic
 - CORS: restrict origins in production
-- Rate limit public APIs
+- Plan for **rate limiting**:
+  - Per-IP, per-user, per-endpoint quotas
+  - Example: Free users 1000 requests/day, 20 req/min/IP
+- **Security should not be an afterthought:** integrate from the start
+
+  - Enforce authentication/authorization consistently
+  - Use HTTPS everywhere
+  - Monitor dependencies for CVEs
 
 ---
 
@@ -199,14 +220,17 @@ settings = Settings()
 
 ## 🚀 10. Performance & Optimization
 
-- Use `async def` + await for all I/O
-- Use async DB (SQLAlchemy 2.0+, Tortoise)
-- `run_in_threadpool()` for sync calls
-- Avoid N+1: use `selectinload()`, join queries
-- Enable GZip/Brotli compression
-- Paginate everything
-- Use Redis or `lru_cache` for caching
-
+* Use `async def` + `await` for all I/O operations
+* Use async DB drivers (SQLAlchemy 2.0+ async, Tortoise ORM)
+* Avoid blocking I/O in event loop: use `run_in_threadpool()` where needed
+* **Avoid N+1 queries:** use `selectinload()`, efficient joins
+* **Enable connection pooling** to avoid repeated DB handshake overhead
+* **Use caching:** Redis, Memcached, or local LRU for frequently accessed data
+* **Pagination:** implement offset-based *and/or* cursor-based pagination (cursor preferred for large dynamic datasets)
+* Enable compression (Gzip or Brotli) on large responses
+* Use **lightweight JSON serializers** (e.g. `orjson`) for faster JSON encoding
+* Use **asynchronous logging** in high-throughput systems to avoid blocking I/O
+* Use background tasks for expensive post-response processing
 ---
 
 ## 🧾 11. Logging & Error Handling
@@ -222,9 +246,13 @@ async def add_process_time_header(request: Request, call_next):
 ```
 
 - Use `logging.config.dictConfig` for structured logs
+- For high-performance systems, implement **asynchronous logging** (background log writing)
+
+  - Be aware of slight risk of log loss if app crashes before flush
 - Customize error handlers: `HTTPException`, `RequestValidationError`
 - Avoid exposing internal stack traces
 - Use correlation IDs for tracing requests
+
 
 ---
 
@@ -251,16 +279,28 @@ async def add_process_time_header(request: Request, call_next):
 
 ## ⛔ Common Pitfalls
 
-| Mistake | Solution |
-|--------|----------|
-| One large `main.py` | Split with APIRouters |
-| Blocking I/O in async route | Use async or threadpool |
-| Skipping validation | Use Pydantic + `Field()` |
-| No pagination | Use `limit`, `offset` |
-| Exposed internals | Customize error messages |
-| Unauthenticated routes | Secure with `Depends()` |
-| No tests | Use `pytest`, `TestClient` |
-| No versioning | Prefix routes with `/api/v1/` |
-| Wildcard CORS | Only allow trusted origins |
+| Mistake                     | Solution                              |
+| --------------------------- | ------------------------------------- |
+| One large `main.py`         | Split with APIRouters                 |
+| Blocking I/O in async route | Use async or threadpool               |
+| Skipping validation         | Use Pydantic + `Field()`              |
+| No pagination               | Use `limit`, `offset` or cursor-based |
+| Exposed internals           | Customize error messages              |
+| Unauthenticated routes      | Secure with `Depends()`               |
+| No tests                    | Use `pytest`, `TestClient`            |
+| No versioning               | Prefix routes with `/api/v1/`         |
+| Wildcard CORS               | Only allow trusted origins            |
 
+## General API Engineering Tips
+
+* Use clear and consistent naming in URLs:
+
+  * Plural nouns for collections (`/users/`)
+  * Forward slashes (`/`) to indicate hierarchy
+  * Hyphens (`-`) instead of underscores for multi-word segments
+* Plan for future API versions — adopt versioning from day one
+* Document idempotency behavior clearly per endpoint
+* Use `.env` files for configuration (e.g. `python-dotenv`, `pydantic.BaseSettings`)
+* Use Alembic for DB migrations (if using relational DB)
+* Automate CI/CD pipelines — include tests and lint checks
 ---
