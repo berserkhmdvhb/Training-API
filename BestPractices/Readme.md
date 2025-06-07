@@ -106,6 +106,7 @@ def get_items(db: Session = Depends(get_db)):
 - Follow SOLID: Single Responsibility, Open/Closed, etc.
 - Keep route handlers thin (delegate to services)
 - Consistent naming: plural nouns, snake_case in Python, kebab-case in URLs
+    ![31](figures/31.PNG)
 
   ### ✅ Linting & Formatting
 - Use `ruff` for linting and formatting
@@ -143,7 +144,10 @@ class Item(BaseModel):
 ## 🔁 7. API Design Best Practices
 
 - Use nouns in paths: `/items/`, `/orders/{order_id}`
+    ![34](figures/34.PNG)
 - Version APIs: `/api/v1/...`
+    ![42](figures/42.PNG)
+    ![43](figures/43.PNG)
 - * Use **clear query strings** for filtering and sorting:
   * Example: `?sort_by=registered`
   * Example: `?filter=color:blue`
@@ -158,7 +162,6 @@ class Item(BaseModel):
   - Pagination: `?limit=20&offset=0`
     - **Offset-based** (`limit`, `offset`) — simple but can be slow on large datasets
     ![18](figures/18.PNG)
-    ![18_1](figures/18_1.PNG)
     ![18_2](figures/18_2.PNG)
     ![18_3](figures/18_3.PNG)
     ![18_4](figures/18_4.PNG)
@@ -172,6 +175,12 @@ class Item(BaseModel):
   - `PUT`, `DELETE`: should be idempotent
   - `POST`: not idempotent by default — implement safeguards (client-generated IDs)
   - `PATCH`: not guaranteed idempotent — document behavior
+  ![36](figures/36.PNG)
+  ![37](figures/37.PNG)
+  ![38](figures/38.PNG)
+  ![39](figures/39.PNG)
+  ![40](figures/40.PNG)
+  ![41](figures/41.PNG)
 - Return appropriate status codes
 
 - Use consistent, clear URL patterns:
@@ -180,6 +189,10 @@ class Item(BaseModel):
   - Hyphens (`-`) for multi-word segments
 - Keep cross-resource references simple
 - Plan for **rate limiting** to protect from abuse and DDoS attacks
+    ![51](figures/51.PNG)
+    ![52](figures/52.PNG)
+    ![53](figures/53.PNG)
+    ![54](figures/54.PNG)
 ---
 
 ## 🛡️ 8. Security
@@ -233,16 +246,31 @@ settings = Settings()
 ---
 
 ## 🚀 10. Performance & Optimization
+![2](figures/2.PNG)  
 
 * Use `async def` + `await` for all I/O operations
 * Use async DB drivers (SQLAlchemy 2.0+ async, Tortoise ORM)
 * Avoid blocking I/O in event loop: use `run_in_threadpool()` where needed
 * **Avoid N+1 queries:** use `selectinload()`, efficient joins
+  ![13](figures/13.PNG)
+  ![14](figures/14.PNG)
+  ![15](figures/15.PNG)
 * **Enable connection pooling** to avoid repeated DB handshake overhead
+    ![6](figures/6.PNG)
+    ![7](figures/7.PNG)
+    ![8](figures/8.PNG)  
 * **Use caching:** Redis, Memcached, or local LRU for frequently accessed data
+    ![3](figures/3.PNG)
+    ![4](figures/4.PNG)
+    ![5](figures/5.PNG)  
 * **Pagination:** implement offset-based *and/or* cursor-based pagination (cursor preferred for large dynamic datasets)
 * Enable compression (Gzip or Brotli) on large responses
+  ![21](figures/21.PNG)
+  ![22](figures/22.PNG)
+  ![23](figures/23.PNG)
 * Use **lightweight JSON serializers** (e.g. `orjson`) for faster JSON encoding
+  ![19](figures/19.PNG)
+  ![20](figures/20.PNG)
 * Use **asynchronous logging** in high-throughput systems to avoid blocking I/O
 * Use background tasks for expensive post-response processing
 ---
@@ -308,7 +336,7 @@ async def add_process_time_header(request: Request, call_next):
 ## General API Engineering Tips
 
 * Use clear and consistent naming in URLs:
-
+  
   * Plural nouns for collections (`/users/`)
   * Forward slashes (`/`) to indicate hierarchy
   * Hyphens (`-`) instead of underscores for multi-word segments
